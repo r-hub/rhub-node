@@ -25,8 +25,8 @@ api = {
     optional_dependency_types: optional_dependency_types,
     dependency_types: dependency_types,
 
-    base_packages = base_packages,
-    recommended_packages = recommended_packages
+    base_packages: base_packages,
+    recommended_packages: recommended_packages
 };
 
 module.exports = api;

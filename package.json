@@ -1,0 +1,23 @@
+{
+  "name": "rhub-node",
+  "version": "1.0.0",
+  "description": "r-hub contants and utility functions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/r-hub/rhub-node.git"
+  },
+  "keywords": [
+    "r-hub",
+    "R"
+  ],
+  "author": "Gabor Csardi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/r-hub/rhub-node/issues"
+  },
+  "homepage": "https://github.com/r-hub/rhub-node#readme"
+}

@@ -19,5 +19,10 @@
   "bugs": {
     "url": "https://github.com/r-hub/rhub-node/issues"
   },
-  "homepage": "https://github.com/r-hub/rhub-node#readme"
+  "homepage": "https://github.com/r-hub/rhub-node#readme",
+  "dependencies": {
+    "async": "^2.0.0-rc.2",
+    "got": "^5.5.x",
+    "string-template": "^1.0.0"
+  }
 }

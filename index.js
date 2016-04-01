@@ -88,7 +88,7 @@ api = {
 
     crandb_url: crandb_url,
 
-    valid_package_name:     '[a-zA-Z][a-zA-Z\\.]*[a-zA-Z0-9]',
+    valid_package_name:     '[a-zA-Z][a-zA-Z0-9\\.]*[a-zA-Z]',
     valid_package_version:  '([0-9]+[.-]){1,}[0-9]+',
     valid_R_system_version: '[0-9]+\\.[0-9]+\\.[0-9]+',
     valid_numeric_version:  '([0-9]+[.-])*[0-9]+',

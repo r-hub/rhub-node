@@ -1,6 +1,5 @@
-var got = require('got');
-var async = require('async');
-var format = require('string-template');
+import got from 'got';
+import format from 'string-template';
 
 var essential_dependency_types = ['Depends', 'LinkingTo', 'Imports' ];
 var optional_dependency_types =  ['Suggests', 'Enhances' ];
@@ -34,57 +33,50 @@ var cran_src_urls = [
 
 var crandb_url = 'https://crandb.r-pkg.org';
 
-function get_latest_cran_version(package, callback) {
-    var url = crandb_url + '/' + package;
-    got(url, function(err, body, response) {
-	if (err) { return callback(err); }
-	callback(null, JSON.parse(body).Version);
-    })
+async function get_latest_cran_version(pkg) {
+    var url = crandb_url + '/' + pkg;
+    const resp = await got(url).json();
+    return resp['Version'];
 }
 
-function get_version(package, version, callback) {
+async function get_version(pkg, version) {
     if (version === undefined) {
-	get_latest_cran_version(package, callback);
+	return get_latest_cran_version(pkg);
     } else {
-	callback(null, version);
+	return version;
     }
 }
 
-function check_url(url, callback) {
-    got.head(url, function(err, body, response) {
-	callback(null, !err);
-    });
+async function check_url(url) {
+    try {
+	await got.head(url);
+	return true;
+    } catch (err) {
+	return false;
+    }
 }
 
-function get_cran_pkg_url(package, version, callback) {
-    get_version(package, version, function(err, version) {
-	if (err) { return callback(err); }
-	var urls = cran_src_urls.map(
-	    function(x) {
-		return format(x, {
-		    'mirror': cran_mirror,
-		    'package': package,
-		    'version': version
-		})
-	    }
-	);
-	// Return the first one that works
-	async.detectSeries(
-	    urls,
-	    check_url,
-	    function(err, result) {
-		if (err) { return callback(err); }
-		if (result === undefined) {
-		    callback('Cannot find a working URL');
-		} else {
-		    callback(null, result);
-		}
-	    }
-	)
-    })
+async function get_cran_pkg_url(pkg, version) {
+    const ver = await get_version(pkg, version);
+    var urls = cran_src_urls.map(
+	function(x) {
+	    return format(x, {
+		'mirror': cran_mirror,
+		'package': pkg,
+		'version': ver
+	    })
+	}
+    );
+
+    for (var url of urls) {
+	if (await check_url(url)) {
+	    return url;
+	}
+    }
+    throw 'Cannot find a working URL';
 }
 
-api = {
+const api = {
 
     crandb_url: crandb_url,
 
@@ -107,4 +99,4 @@ api = {
     get_cran_pkg_url: get_cran_pkg_url
 };
 
-module.exports = api;
+export default api;
